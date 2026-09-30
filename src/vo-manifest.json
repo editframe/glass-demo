@@ -1,0 +1,74 @@
+{
+  "hook-1": {
+    "text": "This text is made of glass.",
+    "duration": 2.739
+  },
+  "hook-2": {
+    "text": "Everything you see through it is live video, rendered frame by frame.",
+    "duration": 4.899
+  },
+  "hook-3": {
+    "text": "Here's what it can do, how it works, and how to ship it at scale.",
+    "duration": 4.446
+  },
+  "show-1": {
+    "text": "Chunky, frosted type, with real depth.",
+    "duration": 3.579
+  },
+  "show-2": {
+    "text": "A lens that tracks the performer.",
+    "duration": 2.139
+  },
+  "show-3": {
+    "text": "Reeded glass, slicing the scene into ribbons.",
+    "duration": 3.379
+  },
+  "show-4": {
+    "text": "Frosted panels that react to the music.",
+    "duration": 2.659
+  },
+  "show-5": {
+    "text": "Even water, rippling on the beat.",
+    "duration": 2.779
+  },
+  "how-1": {
+    "text": "So how does it work? Three layers.",
+    "duration": 3.059
+  },
+  "how-2": {
+    "text": "At the bottom, an E-F video element. Or any HTML at all.",
+    "duration": 4.219
+  },
+  "how-3": {
+    "text": "In the middle, E-F surface mirrors those pixels onto a canvas, every single frame.",
+    "duration": 5.579
+  },
+  "how-4": {
+    "text": "On top, a WebGL shader samples that canvas, and bends each pixel along the glass's surface normal.",
+    "duration": 7.019
+  },
+  "how-5": {
+    "text": "Red, green and blue bend by slightly different amounts. That's the rainbow edge.",
+    "duration": 5.339
+  },
+  "how-6": {
+    "text": "One frame task drives it all, on Editframe's clock. So every frame is deterministic.",
+    "duration": 5.779
+  },
+  "how-7": {
+    "text": "So the same HTML renders in your browser, from the CLI, or in parallel on the Editframe API.",
+    "duration": 6.819
+  },
+  "outro": {
+    "text": "Glass, at scale. Build it with Editframe.",
+    "duration": 3.939
+  },
+  "show-6": {
+    "text": "Rain on a window. Every drop, a tiny lens.",
+    "duration": 4.539
+  },
+  "show-7": {
+    "text": "And glass that shatters, straight into the next shot.",
+    "duration": 3.979
+  }
+}

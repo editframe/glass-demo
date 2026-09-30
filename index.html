@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" class="h-screen w-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass, rendered — Editframe</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+    <script type="module" src="./src/index.js"></script>
+  </head>
+  <body class="h-full w-full m-0 p-0 bg-neutral-950">
+    <!--
+      Music: "Hazy After Hours" at 121 BPM (one beat = 0.49587s). The bed starts
+      1.25s in so its drop lands on the first effect at 14.6s; every effect
+      after that is 9 beats long, so each cut falls on a beat.
+    -->
+    <ef-timegroup workbench id="root" class="w-[1920px] h-[1080px] bg-black relative overflow-hidden font-sans text-white">
+      <ef-timegroup mode="sequence" id="film" class="absolute inset-0">
+
+        <!-- ============================ PART 1 — HOOK ============================ -->
+
+        <!-- Frozen on a still while the glass inflates; the footage starts moving on "live video". -->
+        <ef-timegroup mode="fixed" duration="9s" data-scene="hook" data-live-at="3.7" data-still="/src/assets/stills/hero-1.0.jpg" class="scene">
+          <ef-timegroup mode="fit" class="plate">
+            <ef-video id="hook-video" src="/src/assets/hero.mp4" sourcein="1s" offset="3.7" mute></ef-video>
+            <ef-surface target="hook-video"></ef-surface>
+          </ef-timegroup>
+          <canvas class="glass-canvas"></canvas>
+          <div class="vignette"></div>
+
+          <div class="state-chip reveal" style="--at: 3.7s; --out: 8.5s"><span class="state live"><i></i>live</span></div>
+
+          <ef-audio src="/src/assets/vo/hook-1.wav" offset="0.5"></ef-audio>
+          <ef-audio src="/src/assets/vo/hook-2.wav" offset="3.7"></ef-audio>
+          <div class="cap reveal" style="--at: 0.5s; --out: 3.3s">This text is made of glass.</div>
+          <div class="cap reveal" style="--at: 3.7s; --out: 8.8s">Everything you see through it is live video, rendered frame by frame.</div>
+        </ef-timegroup>
+
+        <!-- Same shot keeps rolling under the outline cards. -->
+        <ef-timegroup mode="fixed" duration="5.6s" data-scene="outline" class="scene">
+          <ef-timegroup mode="fit" class="plate">
+            <ef-video id="outline-video" src="/src/assets/hero.mp4" sourcein="6.3s" mute></ef-video>
+            <ef-surface target="outline-video"></ef-surface>
+          </ef-timegroup>
+          <canvas class="glass-canvas"></canvas>
+
+          <div class="outline-card reveal" style="--at: 0.62s; left: 170px">
+            <div class="outline-num">01</div>
+            <div class="outline-title">The effects</div>
+          </div>
+          <div class="outline-card reveal" style="--at: 2.08s; left: 710px">
+            <div class="outline-num">02</div>
+            <div class="outline-title">How it works</div>
+          </div>
+          <div class="outline-card reveal" style="--at: 3.3s; left: 1250px">
+            <div class="outline-num">03</div>
+            <div class="outline-title">Ship it at scale</div>
+          </div>
+
+          <ef-audio src="/src/assets/vo/hook-3.wav" offset="0.25"></ef-audio>
+          <div class="cap reveal" style="--at: 0.25s; --out: 5.1s">Here's what it can do, how it works, and how to ship it at scale.</div>
+        </ef-timegroup>
+
+        <!-- ========================== PART 2 — THE EFFECTS ========================== -->
+
+        <ef-timegroup mode="fixed" duration="4.4628s" data-scene="chunky" class="scene">
+          <ef-timegroup mode="fit" class="plate">
+            <ef-video id="chunky-video" src="/src/assets/neon.mp4" sourcein="4s" mute></ef-video>
+            <ef-surface target="chunky-video"></ef-surface>
+          </ef-timegroup>
+          <canvas class="glass-canvas"></canvas>
+          <div class="vignette"></div>
+          <div class="fx-head">
+            <div class="fx-title reveal" style="--at: 0.1s">Frosted, extruded</div>
+          </div>
+          <ef-audio src="/src/assets/vo/show-1.wav" offset="0.3"></ef-audio>
+          <div class="cap reveal" style="--at: 0.3s; --out: 4.1s">Chunky, frosted type, with real depth.</div>
+        </ef-timegroup>
+
+        <ef-timegroup mode="fixed" duration="4.4628s" data-scene="lens" data-track-offset="7.8" class="scene">
+          <ef-timegroup mode="fit" class="plate">
+            <ef-video id="lens-video" src="/src/assets/singer.mp4" sourcein="7.8s" mute></ef-video>
+            <ef-surface target="lens-video"></ef-surface>
+          </ef-timegroup>
+          <canvas class="glass-canvas"></canvas>
+          <div class="vignette"></div>
+          <div class="fx-head">
+            <div class="fx-title reveal" style="--at: 0.1s">Tracking lens</div>
+          </div>
+          <ef-audio src="/src/assets/vo/show-2.wav" offset="0.35"></ef-audio>
+          <div class="cap reveal" style="--at: 0.35s; --out: 3.4s">A lens that tracks the performer.</div>
+        </ef-timegroup>
+
+        <ef-timegroup mode="fixed" duration="4.4628s" data-scene="reeded" class="scene">
+          <ef-timegroup mode="fit" class="plate">
+            <ef-video id="reeded-video" src="/src/assets/smoke.mp4" sourcein="2s" mute></ef-video>
+            <ef-surface target="reeded-video"></ef-surface>
+          </ef-timegroup>
+          <canvas class="glass-canvas"></canvas>
+          <div class="vignette"></div>
+          <div class="fx-head">
+            <div class="fx-title reveal" style="--at: 0.1s">Reeded glass</div>
+          </div>
+          <ef-audio src="/src/assets/vo/show-3.wav" offset="0.3"></ef-audio>
+          <div class="cap reveal" style="--at: 0.3s; --out: 4.0s">Reeded glass, slicing the scene into ribbons.</div>
+        </ef-timegroup>
+
+        <ef-timegroup mode="fixed" duration="4.4628s" data-scene="frosted" class="scene">
+          <ef-timegroup mode="fit" class="plate">
+            <ef-video id="frosted-video" src="/src/assets/silhouette.mp4" sourcein="3s" mute></ef-video>
+            <ef-surface target="frosted-video"></ef-surface>
+          </ef-timegroup>
+          <canvas class="glass-canvas"></canvas>
+          <div class="vignette"></div>
+          <div class="fx-head">
+            <div class="fx-title reveal" style="--at: 0.1s">Frosted panels</div>
+          </div>
+          <div class="player reveal" style="--at: 0.35s">
+            <div class="player-art"></div>
+            <div class="player-meta">
+              <div class="player-title">Hazy After Hours</div>
+            </div>
+            <div class="player-bar"><div class="player-fill"></div></div>
+          </div>
+          <ef-audio src="/src/assets/vo/show-4.wav" offset="0.35"></ef-audio>
+          <div class="cap reveal" style="--at: 0.35s; --out: 3.6s">Frosted panels that react to the music.</div>
+        </ef-timegroup>
+
+        <ef-timegroup mode="fixed" duration="4.4628s" data-scene="water" data-bpm="121" data-beat-offset="0.2204" class="scene">
+          <ef-timegroup mode="fit" class="plate">
+            <ef-video id="water-video" src="/src/assets/pool.mp4" sourcein="1s" mute></ef-video>
+            <ef-surface target="water-video"></ef-surface>
+          </ef-timegroup>
+          <canvas class="glass-canvas"></canvas>
+          <div class="vignette"></div>
+          <div class="fx-head">
+            <div class="fx-title reveal" style="--at: 0.1s">Water, on the beat</div>
+          </div>
+          <ef-audio src="/src/assets/vo/show-5.wav" offset="0.35"></ef-audio>
+          <div class="cap reveal" style="--at: 0.35s; --out: 3.7s">Even water, rippling on the beat.</div>
+        </ef-timegroup>
+
+        <!--
+          Rain runs over live footage until the impact (12 beats in). At the impact
+          the pane freezes into a still, cracks, and its shards fall away to reveal
+          the next shot, which is already playing underneath.
+        -->
+        <ef-timegroup mode="fixed" duration="9.4215s" data-scene="rain" data-impact="5.95" data-still="/src/assets/stills/face-7.95.jpg" class="scene">
+          <ef-timegroup mode="fit" class="plate" data-plate="rain">
+            <ef-video id="rain-video" src="/src/assets/face.mp4" sourcein="2s" mute></ef-video>
+            <ef-surface target="rain-video"></ef-surface>
+          </ef-timegroup>
+          <ef-timegroup mode="fit" class="plate" data-plate="next">
+            <ef-video id="next-video" src="/src/assets/singer_loop.mp4" offset="5.95" mute></ef-video>
+            <ef-surface target="next-video"></ef-surface>
+          </ef-timegroup>
+          <canvas class="glass-canvas"></canvas>
+          <div class="vignette"></div>
+          <div class="fx-head">
+            <div class="fx-stack">
+              <div class="fx-title reveal" style="--at: 0.1s; --out: 5.7s">Rain on glass</div>
+              <div class="fx-title reveal" style="--at: 6.1s; --out: 9.0s">Shatter transition</div>
+            </div>
+          </div>
+          <ef-audio src="/src/assets/sfx/rain.wav" volume="0.8"></ef-audio>
+          <ef-audio src="/src/assets/sfx/shatter.wav" offset="5.89" volume="0.55"></ef-audio>
+          <ef-audio src="/src/assets/vo/show-6.wav" offset="0.25"></ef-audio>
+          <ef-audio src="/src/assets/vo/show-7.wav" offset="4.95"></ef-audio>
+          <div class="cap reveal" style="--at: 0.25s; --out: 4.55s">Rain on a window. Every drop, a tiny lens.</div>
+          <div class="cap reveal" style="--at: 4.95s; --out: 9.1s">And glass that shatters, straight into the next shot.</div>
+        </ef-timegroup>
+
+        <!-- ========================== PART 3 — HOW IT WORKS ========================== -->
+
+        <!-- Picks up the singer exactly where the shatter revealed her. -->
+        <ef-timegroup mode="fixed" duration="22.4s" data-scene="layers" class="scene bg-[#07080b]">
+          <ef-timegroup mode="fit" class="stack">
+            <div id="layers-plate" class="absolute inset-0">
+              <ef-video id="layers-video" src="/src/assets/singer_loop.mp4" sourcein="3.4715s" mute class="absolute inset-0 w-full h-full object-cover"></ef-video>
+              <div class="any-html">
+                <div class="any-html-card">
+                  <div class="any-html-kicker">&lt;div class="card"&gt;</div>
+                  <div class="any-html-title">Any HTML</div>
+                  <div class="any-html-sub">text · gradients · images · video</div>
+                </div>
+              </div>
+            </div>
+            <div class="absolute inset-0 bg-[#07080b] grid-bg"></div>
+            <div class="layer" data-layer="0"><ef-surface target="layers-plate"></ef-surface><i class="corner"></i></div>
+            <div class="layer" data-layer="1"><ef-surface target="layers-plate"></ef-surface><div class="pixel-grid"></div><i class="corner"></i></div>
+            <div class="layer" data-layer="2"><canvas class="glass-canvas"></canvas><i class="corner"></i></div>
+          </ef-timegroup>
+
+          <div class="layer-label" data-label="0"><span class="num">1</span><div><b>&lt;ef-video&gt;</b><i>decoded once</i></div></div>
+          <div class="layer-label" data-label="1"><span class="num">2</span><div><b>&lt;ef-surface&gt;</b><i>pixels → canvas</i></div></div>
+          <div class="layer-label" data-label="2"><span class="num">3</span><div><b>WebGL shader</b><i>bends the canvas</i></div></div>
+
+          <div class="code-panel reveal" style="--at: 3.2s; --out: 20.6s">
+            <div class="code-tabs">
+              <span class="tab" data-tab="a" style="--on: 3.8s; --off: 8.5s">scene.html</span>
+              <span class="tab" data-tab="b" style="--on: 8.5s; --off: 14.6s">frame.js</span>
+              <span class="tab" data-tab="c" style="--on: 14.6s; --off: 99s">glass.frag</span>
+            </div>
+            <pre class="code code-step" style="--on: 3.8s; --off: 8.5s"><span class="ln"><span class="t">&lt;ef-timegroup</span> <span class="a">mode</span>=<span class="s">"fixed"</span> <span class="a">duration</span>=<span class="s">"6s"</span><span class="t">&gt;</span></span>
+<span class="ln hl" style="--hl: 3.9s; --hl-off: 8.5s">  <span class="t">&lt;ef-video</span> <span class="a">id</span>=<span class="s">"plate"</span> <span class="a">src</span>=<span class="s">"singer.mp4"</span><span class="t">&gt;</span></span>
+<span class="ln">  <span class="t">&lt;ef-surface</span> <span class="a">target</span>=<span class="s">"plate"</span><span class="t">&gt;</span></span>
+<span class="ln">  <span class="t">&lt;canvas</span> <span class="a">class</span>=<span class="s">"glass"</span><span class="t">&gt;</span></span>
+<span class="ln"><span class="t">&lt;/ef-timegroup&gt;</span></span>
+<span class="ln"> </span>
+<span class="ln c reveal" style="--at: 6.5s">&lt;!-- target can be any element --&gt;</span>
+<span class="ln reveal hl" style="--at: 6.5s; --hl: 6.5s; --hl-off: 8.5s"><span class="t">&lt;ef-surface</span> <span class="a">target</span>=<span class="s">"card"</span><span class="t">&gt;</span></span></pre>
+            <pre class="code code-step" style="--on: 8.5s; --off: 14.6s"><span class="ln"><span class="k">const</span> surface = <span class="f">$</span>(<span class="s">"ef-surface"</span>);</span>
+<span class="ln"> </span>
+<span class="ln hl" style="--hl: 8.6s; --hl-off: 14.6s">scene.<span class="f">addFrameTask</span>(({ ownCurrentTime: t }) <span class="k">=&gt;</span> {</span>
+<span class="ln c">  // this frame's pixels, already decoded</span>
+<span class="ln hl" style="--hl: 9.6s; --hl-off: 14.6s">  <span class="k">const</span> px = surface.<span class="f">getDisplayCanvas</span>();</span>
+<span class="ln">  gl.<span class="f">texImage2D</span>(TEXTURE_2D, <span class="n">0</span>, RGBA,</span>
+<span class="ln">    RGBA, UNSIGNED_BYTE, px);</span>
+<span class="ln">  glass.<span class="f">draw</span>({ time: t });</span>
+<span class="ln">});</span></pre>
+            <pre class="code code-step" style="--on: 14.6s; --off: 99s"><span class="ln c">// edge distance → height → normal</span>
+<span class="ln"><span class="k">float</span> d = <span class="f">texture</span>(uSdf, uv).r;</span>
+<span class="ln"><span class="k">float</span> h = <span class="f">bevel</span>(d);</span>
+<span class="ln hl" style="--hl: 16.2s; --hl-off: 22s"><span class="k">vec3</span> n = <span class="f">normalize</span>(<span class="k">vec3</span>(-<span class="f">grad</span>(h), <span class="n">1</span>));</span>
+<span class="ln"> </span>
+<span class="ln c">// bend the scene along the normal</span>
+<span class="ln hl" style="--hl: 18.4s; --hl-off: 22s"><span class="k">vec2</span> bent = px - n.xy * uRefract;</span>
+<span class="ln"><span class="k">vec3</span> col = <span class="f">texture</span>(uScene, bent).rgb;</span>
+<span class="ln">col += <span class="f">fresnel</span>(n) + <span class="f">specular</span>(n);</span></pre>
+          </div>
+
+          <ef-audio src="/src/assets/vo/how-1.wav" offset="0.3"></ef-audio>
+          <ef-audio src="/src/assets/vo/how-2.wav" offset="3.8"></ef-audio>
+          <ef-audio src="/src/assets/vo/how-3.wav" offset="8.5"></ef-audio>
+          <ef-audio src="/src/assets/vo/how-4.wav" offset="14.6"></ef-audio>
+          <div class="cap reveal" style="--at: 0.3s; --out: 3.45s">So how does it work? Three layers.</div>
+          <div class="cap reveal" style="--at: 3.8s; --out: 8.15s">At the bottom, an ef-video element. Or any HTML at all.</div>
+          <div class="cap reveal" style="--at: 8.5s; --out: 14.25s">In the middle, ef-surface mirrors those pixels onto a canvas, every single frame.</div>
+          <div class="cap reveal" style="--at: 14.6s; --out: 21.9s">On top, a WebGL shader samples that canvas, and bends each pixel along the glass's surface normal.</div>
+        </ef-timegroup>
+
+        <!-- A still, so the before/after split compares the exact same pixels. -->
+        <ef-timegroup mode="fixed" duration="6.4s" data-scene="prism" data-still="/src/assets/stills/neon-2.jpg" class="scene">
+          <canvas class="glass-canvas"></canvas>
+          <div class="vignette"></div>
+          <div class="split-line"><div class="split-tag left">with dispersion</div><div class="split-tag right">without</div></div>
+          <div class="code-card bottom-left reveal" style="--at: 0.9s">
+            <pre class="code"><span class="ln c">// nine wavelengths, each with its own IOR</span>
+<span class="ln"><span class="k">for</span> (<span class="k">int</span> i = <span class="n">0</span>; i &lt; <span class="n">9</span>; i++) {</span>
+<span class="ln">  <span class="k">float</span> t = <span class="k">float</span>(i) / <span class="n">8.0</span>;</span>
+<span class="ln hl" style="--hl: 1.6s; --hl-off: 99s">  <span class="k">float</span> k = <span class="n">1.0</span> + uDispersion * (t - <span class="n">0.5</span>);</span>
+<span class="ln">  col += <span class="f">sample</span>(px - n.xy * uRefract * k) * <span class="f">spectrum</span>(t);</span>
+<span class="ln">}</span></pre>
+          </div>
+          <div class="ring reveal" style="--at: 4.15s; --ring-x: 655px; --ring-y: 495px"></div>
+          <ef-audio src="/src/assets/vo/how-5.wav" offset="0.35"></ef-audio>
+          <div class="cap reveal" style="--at: 0.35s; --out: 5.95s">Red, green and blue bend by slightly different amounts. That's the rainbow edge.</div>
+        </ef-timegroup>
+
+        <!-- A still too: the scrubbed preview should only show the glass changing with t. -->
+        <ef-timegroup mode="fixed" duration="6.8s" data-scene="clock" data-still="/src/assets/stills/hero-8.jpg" class="scene bg-[#07080b] grid-bg">
+          <div class="code-card left reveal" style="--at: 0.1s">
+            <pre class="code"><span class="ln"><span class="c">// no requestAnimationFrame, no wall clock</span></span>
+<span class="ln hl" style="--hl: 0.6s; --hl-off: 99s">scene.<span class="f">addFrameTask</span>(({ ownCurrentTime: t }) <span class="k">=&gt;</span> {</span>
+<span class="ln">  glass.<span class="f">draw</span>({</span>
+<span class="ln">    tilt:    Math.<span class="f">sin</span>(t * <span class="n">0.8</span>) * <span class="n">14</span>,</span>
+<span class="ln">    reveal:  <span class="f">ease</span>(t / <span class="n">1.2</span>),</span>
+<span class="ln">    sweep:   t * <span class="n">0.5</span>,</span>
+<span class="ln">  });</span>
+<span class="ln">});</span>
+<span class="ln"> </span>
+<span class="ln c reveal" style="--at: 3.6s">// pixels = f(t). Seek anywhere, same frame.</span></pre>
+          </div>
+          <div class="preview reveal" style="--at: 0.25s">
+            <div class="preview-screen"><canvas class="glass-canvas"></canvas></div>
+            <div class="preview-chrome">
+              <div class="scrub"><div class="scrub-fill"></div><div class="scrub-ghosts"></div><div class="scrub-head"></div></div>
+              <div class="scrub-read"><b data-seek>0.00s</b> <span class="dim">→ frame</span> <b data-seek-frame>000</b></div>
+            </div>
+          </div>
+          <ef-audio src="/src/assets/vo/how-6.wav" offset="0.35"></ef-audio>
+          <div class="cap reveal" style="--at: 0.35s; --out: 6.4s">One frame task drives it all, on Editframe's clock. So every frame is deterministic.</div>
+        </ef-timegroup>
+
+        <ef-timegroup mode="fixed" duration="7.9s" data-scene="scale" class="scene bg-[#07080b] grid-bg">
+          <ef-timegroup mode="fit" class="plate">
+            <ef-video id="scale-video" src="/src/assets/neon.mp4" sourcein="8s" mute></ef-video>
+            <ef-surface target="scale-video"></ef-surface>
+          </ef-timegroup>
+          <canvas class="glass-canvas hidden-source" id="scale-glass"></canvas>
+          <div class="scale-scrim grid-bg"></div>
+          <div class="targets">
+            <div class="target reveal" style="--at: 1.3s">
+              <div class="hud-label">In the browser</div>
+              <pre class="code sm"><span class="k">await</span> <span class="f">renderTimegroupToVideo</span>(scene, {
+  fps: <span class="n">30</span>,
+});</pre>
+            </div>
+            <div class="target reveal" style="--at: 3.05s">
+              <div class="hud-label">From the CLI</div>
+              <pre class="code sm"><span class="c">$</span> npx editframe render \
+    -o glass.mp4</pre>
+            </div>
+            <div class="target accent reveal" style="--at: 4.3s">
+              <div class="hud-label">On the render API</div>
+              <pre class="code sm"><span class="k">await</span> <span class="f">createRender</span>(client, {
+  html, width: <span class="n">1920</span>, height: <span class="n">1080</span>,
+});</pre>
+            </div>
+          </div>
+          <div class="slices reveal" style="--at: 4.6s">
+            <div class="slices-head"><span></span><span class="slices-done reveal" style="--at: 7.0s">✓ glass.mp4 · 1920×1080 · 30 fps</span></div>
+            <div class="slices-row">
+              <div class="slice" style="--i: 0"><div class="slice-screen"><ef-surface target="scale-glass"></ef-surface></div><div class="slice-bar"><i></i></div><span>0–4s</span></div>
+              <div class="slice" style="--i: 1"><div class="slice-screen"><ef-surface target="scale-glass"></ef-surface></div><div class="slice-bar"><i></i></div><span>4–8s</span></div>
+              <div class="slice" style="--i: 2"><div class="slice-screen"><ef-surface target="scale-glass"></ef-surface></div><div class="slice-bar"><i></i></div><span>8–12s</span></div>
+              <div class="slice" style="--i: 3"><div class="slice-screen"><ef-surface target="scale-glass"></ef-surface></div><div class="slice-bar"><i></i></div><span>12–16s</span></div>
+              <div class="slice" style="--i: 4"><div class="slice-screen"><ef-surface target="scale-glass"></ef-surface></div><div class="slice-bar"><i></i></div><span>16–20s</span></div>
+              <div class="slice" style="--i: 5"><div class="slice-screen"><ef-surface target="scale-glass"></ef-surface></div><div class="slice-bar"><i></i></div><span>20–24s</span></div>
+            </div>
+          </div>
+          <ef-audio src="/src/assets/vo/how-7.wav" offset="0.35"></ef-audio>
+          <div class="cap reveal" style="--at: 0.35s; --out: 7.5s">So the same HTML renders in your browser, from the CLI, or in parallel on the Editframe API.</div>
+        </ef-timegroup>
+
+        <ef-timegroup mode="fixed" duration="6.2s" data-scene="outro" class="scene">
+          <ef-timegroup mode="fit" class="plate">
+            <ef-video id="outro-video" src="/src/assets/hero.mp4" sourcein="5s" mute></ef-video>
+            <ef-surface target="outro-video"></ef-surface>
+          </ef-timegroup>
+          <canvas class="glass-canvas"></canvas>
+          <div class="vignette strong"></div>
+          <div class="outro-line reveal" style="--at: 1.3s">Glass, at scale.</div>
+          <div class="outro-cta reveal" style="--at: 2.5s">
+            <span>Build it with Editframe</span><span class="hud-rule"></span><b>editframe.com</b>
+          </div>
+          <ef-audio src="/src/assets/vo/outro.wav" offset="0.5"></ef-audio>
+          <div class="fade-black" style="--at: 5.3s"></div>
+        </ef-timegroup>
+      </ef-timegroup>
+
+      <!-- #music is the analysis copy (muted, full level) the scenes read FFT data from;
+           the audible bed is pre-mixed with ducking under the voiceover. -->
+      <ef-timegroup mode="fit">
+        <ef-audio id="music" src="/src/assets/bed.mp3" sourcein="1.25s" mute fft-size="256" fft-decay="4"></ef-audio>
+        <ef-audio id="music-mix" src="/src/assets/bed_mix.wav"></ef-audio>
+      </ef-timegroup>
+    </ef-timegroup>
+  </body>
+</html>

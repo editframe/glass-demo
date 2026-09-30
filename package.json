@@ -1,0 +1,21 @@
+{
+  "name": "glass-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Real-time glass shaders over live video, built as an Editframe composition",
+  "type": "module",
+  "scripts": {
+    "start": "editframe preview",
+    "dev": "vite --port 5199 --strictPort --host 127.0.0.1",
+    "render": "editframe render --url http://127.0.0.1:5199/ -o output/glass-demo.mp4"
+  },
+  "dependencies": {
+    "@editframe/cli": "0.60.11",
+    "@editframe/elements": "0.60.11",
+    "@editframe/vite-plugin": "0.60.11",
+    "@tailwindcss/vite": "^4.0.0",
+    "tailwindcss": "^4.0.0",
+    "vite": "^8.0.0",
+    "vite-plugin-singlefile": "^2.3.0"
+  }
+}

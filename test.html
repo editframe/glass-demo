@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <style>
+      html, body { margin: 0; background: #000; }
+      canvas { display: block; width: 1920px; height: 1080px; }
+    </style>
+  </head>
+  <body>
+    <canvas id="out"></canvas>
+    <script type="module">
+      // Dev harness: renders one glass mode over a still, for fast look-dev.
+      //   /test.html?mode=EXTRUDE&img=hero&t=1.2&u={"uDepth":70}
+      import { GlassRenderer, MODE, placeSolid } from "/src/glass/renderer.js";
+      import { textSdf } from "/src/glass/sdf.js";
+
+      const q = new URLSearchParams(location.search);
+      const load = (name) =>
+        new Promise((res, rej) => {
+          const img = new Image();
+          img.onload = () => res(img);
+          img.onerror = rej;
+          img.src = `/src/assets/stills/${name}.jpg`;
+        });
+
+      window.renderTest = async () => {
+        const img = await load(q.get("img") ?? "hero");
+        const img2 = q.get("img2") ? await load(q.get("img2")) : null;
+        const mode = MODE[q.get("mode") ?? "EXTRUDE"];
+        const t = Number(q.get("t") ?? 1);
+        const extra = JSON.parse(q.get("u") ?? "{}");
+        const place = JSON.parse(q.get("place") ?? "{}");
+        const text = q.get("text") ?? "GLASS";
+        const font = { family: q.get("font") ?? "Anton", weight: Number(q.get("weight") ?? 400) };
+        const sdf = await textSdf({
+          lines: text.split("|"),
+          font,
+          size: Number(q.get("size") ?? 560),
+          tracking: Number(q.get("tracking") ?? 8),
+          y: Number(q.get("ty") ?? 540),
+          italic: q.has("italic"),
+          scale: Number(q.get("sdfScale") ?? 2),
+        });
+        const r = new GlassRenderer(document.getElementById("out"));
+        r.setSdf(sdf);
+        const t0 = performance.now();
+        r.render(img, mode, { uTime: t, ...placeSolid(place), ...(img2 ? { source2: img2 } : {}), ...extra });
+        r.ctx.getImageData(0, 0, 1, 1);
+        return performance.now() - t0;
+      };
+    </script>
+  </body>
+</html>

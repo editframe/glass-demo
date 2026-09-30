@@ -1,0 +1,869 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Anton";
+  src: url("./assets/fonts/Anton.woff2") format("woff2");
+  font-weight: 400;
+  font-display: block;
+}
+@font-face {
+  font-family: "Inter Tight";
+  src: url("./assets/fonts/InterTight-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: block;
+}
+@font-face {
+  font-family: "Inter Tight";
+  src: url("./assets/fonts/InterTight-italic-800.woff2") format("woff2");
+  font-weight: 800;
+  font-style: italic;
+  font-display: block;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("./assets/fonts/JetBrainsMono-var.woff2") format("woff2");
+  font-weight: 100 800;
+  font-display: block;
+}
+
+@theme {
+  --font-display: "Anton", "Impact", sans-serif;
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+body > ef-workbench {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+:root {
+  --blue: #42a5f5;
+  --gold: #ffca28;
+  --red: #ef5350;
+  --pink: #f06292;
+  --green: #66bb6a;
+  --ink: #07080b;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* The source plate stays in the layout so ef-surface and the video keep
+   painting, but the glass canvas draws the final pixels over it. */
+.plate {
+  position: absolute;
+  inset: 0;
+}
+.plate ef-video,
+.plate ef-surface {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.glass-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.55) 100%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent 22%, transparent 70%, rgba(0, 0, 0, 0.6));
+}
+.vignette.strong {
+  background:
+    radial-gradient(110% 85% at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.7) 100%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent 30%, transparent 60%, rgba(0, 0, 0, 0.75));
+}
+.grid-bg {
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: -1px -1px;
+}
+
+/* ---------------------------------------------------------------- motion */
+
+.reveal {
+  animation:
+    rv-in 0.6s var(--ease-out) var(--at, 0s) both,
+    rv-out 0.35s var(--ease-in) var(--out, 9999s) forwards;
+}
+@keyframes rv-in {
+  from {
+    opacity: 0;
+    translate: 0 22px;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
+  }
+}
+@keyframes rv-out {
+  to {
+    opacity: 0;
+    translate: 0 -10px;
+    filter: blur(6px);
+  }
+}
+
+/* -------------------------------------------------------------------- hud */
+
+.hud-rule {
+  width: 56px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.5);
+}
+.hud-label {
+  font-family: var(--font-mono);
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+.dim {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.cap {
+  position: absolute;
+  left: 50%;
+  bottom: 64px;
+  transform: translateX(-50%);
+  max-width: 1320px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 38px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: #fff;
+  text-shadow:
+    0 2px 18px rgba(0, 0, 0, 0.75),
+    0 1px 3px rgba(0, 0, 0, 0.6);
+  z-index: 6;
+  text-wrap: balance;
+}
+
+@keyframes swap-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes swap-in {
+  to {
+    opacity: 1;
+  }
+}
+
+.state-chip {
+  position: absolute;
+  right: 96px;
+  top: 72px;
+  z-index: 5;
+}
+.state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+.state i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+}
+.state.live i {
+  background: var(--red);
+  box-shadow: 0 0 16px var(--red);
+}
+
+/* ----------------------------------------------------------- outline */
+
+.outline-card {
+  position: absolute;
+  top: 360px;
+  width: 500px;
+  height: 330px;
+  padding: 44px 46px;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+}
+.outline-num {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: rgba(255, 255, 255, 0.85);
+}
+.outline-title {
+  margin-top: auto;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 58px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  text-shadow:
+    0 2px 22px rgba(0, 0, 0, 0.5),
+    0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* ----------------------------------------------------------- showcase */
+
+.fx-head {
+  position: absolute;
+  left: 96px;
+  top: 72px;
+  z-index: 5;
+}
+.fx-stack {
+  display: grid;
+}
+.fx-stack > * {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+.fx-title {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 76px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.45);
+}
+
+.player {
+  position: absolute;
+  left: 110px;
+  top: 360px;
+  width: 760px;
+  height: 300px;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: 1fr auto;
+  column-gap: 36px;
+  z-index: 5;
+}
+.player-art {
+  width: 220px;
+  height: 220px;
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.55), transparent 45%),
+    conic-gradient(from 200deg, var(--pink), var(--gold), var(--blue), var(--pink));
+}
+.player-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+.player-title {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 46px;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.player-sub {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.player-bar {
+  grid-column: 1 / -1;
+  margin-top: 26px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+.player-fill {
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  transform-origin: left;
+  animation: grow 4s linear both;
+}
+@keyframes grow {
+  from {
+    transform: scaleX(0.18);
+  }
+  to {
+    transform: scaleX(0.42);
+  }
+}
+
+/* ------------------------------------------------------------ explainer */
+
+/* Perspective origin sits on the exploded stack (translated left), not the frame center. */
+.stack {
+  position: absolute;
+  inset: 0;
+  perspective: 2600px;
+  perspective-origin: 23% 50%;
+}
+.layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.layer ef-surface,
+.layer canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.layer[data-layer="0"],
+.layer[data-layer="1"] {
+  background: #000;
+}
+.layer[data-layer] {
+  outline: 2px solid rgba(255, 255, 255, var(--outline, 0));
+  outline-offset: 0;
+}
+.pixel-grid {
+  position: absolute;
+  inset: 0;
+  opacity: var(--grid, 0);
+  background-image:
+    linear-gradient(rgba(66, 165, 245, 0.55) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(66, 165, 245, 0.55) 2px, transparent 2px);
+  background-size: 48px 48px;
+  mix-blend-mode: screen;
+}
+/* Animated in CSS (not the frame task) so ef-surface mirrors it on the same frame. */
+.any-html {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1b1f3a, #0b0d18);
+  animation:
+    swap-in 0.5s var(--ease-out) 6.4s forwards,
+    swap-out 0.4s var(--ease-in) 8.2s forwards;
+}
+.layer .corner {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+}
+.any-html-card {
+  width: 1320px;
+  height: 640px;
+  border-radius: 48px;
+  padding: 72px 88px;
+  background: linear-gradient(120deg, #ffca28, #f06292 50%, #42a5f5);
+  color: #0b0d18;
+  display: flex;
+  flex-direction: column;
+}
+.any-html-kicker {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 600;
+}
+.any-html-title {
+  margin-top: auto;
+  font-family: var(--font-sans);
+  font-size: 200px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+.any-html-sub {
+  margin-top: 28px;
+  font-family: var(--font-mono);
+  font-size: 40px;
+}
+
+.layer-label {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+  z-index: 6;
+  white-space: nowrap;
+}
+.layer-label > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.layer-label .num {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  font-family: var(--font-mono);
+  font-size: 19px;
+}
+.layer-label b {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  font-weight: 600;
+}
+.layer-label i {
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.layer-label.active b {
+  color: var(--gold);
+}
+
+.code-panel {
+  position: absolute;
+  right: 70px;
+  top: 230px;
+  width: 730px;
+  height: 490px;
+  border-radius: 22px;
+  background: rgba(13, 15, 21, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  z-index: 6;
+}
+.code-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 16px 18px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.tab {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  padding: 12px 18px 14px;
+  color: rgba(255, 255, 255, 0.4);
+  border-bottom: 2px solid transparent;
+  animation:
+    tab-on 0.2s linear var(--on) forwards,
+    tab-off 0.2s linear var(--off) forwards;
+}
+@keyframes tab-on {
+  to {
+    color: #fff;
+    border-bottom-color: var(--blue);
+  }
+}
+@keyframes tab-off {
+  to {
+    color: rgba(255, 255, 255, 0.4);
+    border-bottom-color: transparent;
+  }
+}
+.code-panel .code-step {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 76px;
+  padding: 36px 40px;
+  font-size: 21px;
+  opacity: 0;
+  animation:
+    step-on 0.45s var(--ease-out) var(--on) forwards,
+    step-off 0.3s var(--ease-in) var(--off) forwards;
+}
+@keyframes step-on {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes step-off {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.code {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  line-height: 1.7;
+  color: #e6e9ef;
+  white-space: pre;
+}
+.code.sm {
+  font-size: 21px;
+  line-height: 1.6;
+}
+/* inline-block, not block: each line is already followed by a newline in the <pre>. */
+.code .ln {
+  display: inline-block;
+  box-sizing: border-box;
+  width: calc(100% + 80px);
+  margin: 0 -40px;
+  padding: 0 40px;
+  border-left: 3px solid transparent;
+}
+.code .ln.hl {
+  animation:
+    hl-on 0.35s var(--ease-out) var(--hl, 9999s) forwards,
+    hl-off 0.35s linear var(--hl-off, 9999s) forwards;
+}
+.code .ln.reveal.hl {
+  animation:
+    rv-in 0.6s var(--ease-out) var(--at, 0s) both,
+    hl-on 0.35s var(--ease-out) var(--hl, 9999s) forwards,
+    hl-off 0.35s linear var(--hl-off, 9999s) forwards;
+}
+@keyframes hl-on {
+  to {
+    background: rgba(66, 165, 245, 0.14);
+    border-left-color: var(--blue);
+  }
+}
+@keyframes hl-off {
+  to {
+    background: transparent;
+    border-left-color: transparent;
+  }
+}
+.code .t,
+.code .k {
+  color: #7cc4fa;
+}
+.code .a {
+  color: var(--gold);
+}
+.code .s {
+  color: #f48fb1;
+}
+.code .f {
+  color: #a5d6a7;
+}
+.code .n {
+  color: #ffb74d;
+}
+.code .c,
+.code .ln.c {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.code-card {
+  position: absolute;
+  right: 96px;
+  bottom: 170px;
+  padding: 30px 40px;
+  border-radius: 22px;
+  background: rgba(10, 12, 18, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+  z-index: 6;
+  overflow: hidden;
+}
+.code-card.left {
+  left: 96px;
+  right: auto;
+  top: 250px;
+  bottom: auto;
+  width: 780px;
+}
+.code-card.bottom-left {
+  left: 96px;
+  right: auto;
+  bottom: 190px;
+}
+.code-card .code {
+  font-size: 22px;
+}
+
+.split-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split-x, -10px);
+  width: 2px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.6);
+  z-index: 5;
+}
+.split-tag {
+  position: absolute;
+  top: 76px;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.55);
+}
+.split-tag.left {
+  right: 18px;
+}
+.split-tag.right {
+  left: 18px;
+}
+.ring {
+  position: absolute;
+  left: var(--ring-x, 640px);
+  top: var(--ring-y, 540px);
+  width: 200px;
+  height: 200px;
+  margin: -100px 0 0 -100px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 30px rgba(255, 202, 40, 0.5);
+  z-index: 5;
+}
+
+.preview {
+  position: absolute;
+  right: 96px;
+  top: 250px;
+  width: 896px;
+  z-index: 6;
+}
+/* Canvases keep their 1920x1080 CSS size and are scaled with a transform:
+   the exporter crops (rather than scales) canvases sized smaller in CSS. */
+.preview-screen {
+  position: relative;
+  width: 896px;
+  height: 504px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+.preview-screen .glass-canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform: scale(0.466667);
+  transform-origin: 0 0;
+}
+.preview-chrome {
+  margin-top: 26px;
+}
+.scrub {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.14);
+}
+.scrub-fill {
+  position: absolute;
+  inset: 0;
+  width: var(--seek-pct, 0%);
+  border-radius: 4px;
+  background: var(--blue);
+}
+.scrub-head {
+  position: absolute;
+  top: 50%;
+  left: var(--seek-pct, 0%);
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 6px rgba(66, 165, 245, 0.35);
+}
+.scrub-ghosts i {
+  position: absolute;
+  top: -10px;
+  width: 2px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.35);
+}
+.scrub-read {
+  margin-top: 22px;
+  font-family: var(--font-mono);
+  font-size: 24px;
+}
+.scrub-read b {
+  color: var(--gold);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.hidden-source {
+  z-index: 0;
+}
+.scale-scrim {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: scrim-in 0.7s var(--ease-in) 0.95s forwards;
+}
+@keyframes scrim-in {
+  to {
+    opacity: 0.9;
+  }
+}
+.targets {
+  position: absolute;
+  left: 96px;
+  right: 96px;
+  top: 190px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  z-index: 6;
+}
+.target {
+  padding: 30px 34px;
+  border-radius: 22px;
+  background: rgba(13, 15, 21, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.target.accent {
+  border-color: rgba(66, 165, 245, 0.7);
+  box-shadow: 0 0 0 1px rgba(66, 165, 245, 0.3), 0 30px 90px rgba(66, 165, 245, 0.12);
+}
+.target .code {
+  margin-top: 18px;
+}
+.slices {
+  position: absolute;
+  left: 96px;
+  right: 96px;
+  top: 520px;
+  z-index: 6;
+}
+.slices-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.slices-done {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--green);
+}
+.slices-row {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+.slice {
+  position: relative;
+}
+/* 6 columns of (1728 - 5 * 16) / 6 = 274.67px, i.e. 1920px scaled by 0.14306. */
+.slice-screen {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.slice-screen ef-surface {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform: scale(0.14306);
+  transform-origin: 0 0;
+}
+.slice-bar {
+  margin-top: 14px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+.slice-bar i {
+  display: block;
+  height: 100%;
+  background: var(--blue);
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+}
+.slice span {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.outro-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 700px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 54px;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+  z-index: 5;
+}
+.outro-cta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: rgba(255, 255, 255, 0.85);
+  z-index: 5;
+}
+.outro-cta b {
+  color: #fff;
+  font-weight: 600;
+}
+.fade-black {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  animation: fade-to-black 0.9s ease-in var(--at) forwards;
+}
+@keyframes fade-to-black {
+  to {
+    opacity: 1;
+  }
+}
