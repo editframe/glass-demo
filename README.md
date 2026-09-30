@@ -2,7 +2,11 @@
 
 Real-time glass refracting live footage: frosted extruded type, a lens that tracks a singer, reeded panes, rain, a shatter transition and prism dispersion. It's all one [Editframe](https://editframe.com) composition: HTML, `<ef-video>`, `<ef-surface>` and a WebGL2 fragment shader. The same composition previews in the browser, renders from the CLI, and renders in parallel on the Editframe API.
 
+https://github.com/user-attachments/assets/40a2b392-8701-4244-b046-07e19f59a2fe
+
 ## What's in the video
+
+![One frame from each scene of the demo](docs/contact-sheet.jpg)
 
 | Effect | Shader mode | How it works |
 |---|---|---|
