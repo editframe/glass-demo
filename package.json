@@ -2,6 +2,7 @@
   "name": "glass-demo",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "description": "Real-time glass shaders over live video, built as an Editframe composition",
   "type": "module",
   "scripts": {

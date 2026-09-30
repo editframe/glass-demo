@@ -144,3 +144,7 @@ Footage, music and sound effects are from [Mixkit](https://mixkit.co), under the
 | `sfx/rain.wav` | Mixkit sound effect 2390 |
 
 The fonts (Anton, Inter Tight and JetBrains Mono) are under the SIL Open Font License 1.1.
+
+## License
+
+The code is MIT licensed; see [LICENSE](LICENSE). The MIT license doesn't cover the footage, music, sound effects or fonts in `src/assets`, which stay under the licenses listed in [Credits](#credits).
