@@ -4,6 +4,8 @@ Real-time glass refracting live footage: frosted extruded type, a lens that trac
 
 ## What's in the video
 
+![One frame from each scene of the demo](docs/contact-sheet.jpg)
+
 | Effect | Shader mode | How it works |
 |---|---|---|
 | Frosted, extruded type | `EXTRUDE` | A ray is marched through a rounded extrusion of the text's distance field. Frost grows with the distance travelled inside the glass. |
